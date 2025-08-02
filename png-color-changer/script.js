@@ -74,6 +74,73 @@ function handleFile(file) {
     reader.readAsDataURL(file);
 }
 
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function processImage() {
+    if (!originalImageData) {
+        alert('Please upload an image first.');
+        return;
+    }
+
+    const fromColor = hexToRgb(document.getElementById('fromColorHex').value);
+    const toColor = hexToRgb(document.getElementById('toColorHex').value);
+    
+    if (!fromColor || !toColor) {
+        alert('Invalid color values.');
+        return;
+    }
+
+    const imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+    const data = imageData.data;
+
+    // Color replacement with tolerance
+    const tolerance = 50;
+    
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        // Check if pixel is close to the from color
+        const rDiff = Math.abs(r - fromColor.r);
+        const gDiff = Math.abs(g - fromColor.g);
+        const bDiff = Math.abs(b - fromColor.b);
+
+        if (rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance && a > 0) {
+            data[i] = toColor.r;     // R
+            data[i + 1] = toColor.g; // G
+            data[i + 2] = toColor.b; // B
+            // Keep original alpha
+        }
+    }
+
+    modifiedCtx.putImageData(imageData, 0, 0);
+    
+    // Show download link
+    const downloadLink = document.getElementById('downloadLink');
+    modifiedCanvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        downloadLink.href = url;
+        downloadLink.download = 'modified-image.png';
+        downloadLink.style.display = 'inline-block';
+    });
+}
+
+function resetImage() {
+    if (originalImageData) {
+        modifiedCtx.putImageData(originalImageData, 0, 0);
+        document.getElementById('downloadLink').style.display = 'none';
+    }
+}
+
 function setColors(fromColor, toColor) {
     document.getElementById('fromColor').value = fromColor;
     document.getElementById('fromColorHex').value = fromColor;
