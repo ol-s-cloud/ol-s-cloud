@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PNG Color Changer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -51,5 +52,17 @@
 
         <a id="downloadLink" style="display: none;">💾 Download Modified Image</a>
     </div>
+
+    <script>
+        // Global variables
+        let originalImageData = null;
+        let originalCanvas = document.getElementById('originalCanvas');
+        let modifiedCanvas = document.getElementById('modifiedCanvas');
+        let originalCtx = originalCanvas.getContext('2d');
+        let modifiedCtx = modifiedCanvas.getContext('2d');
+
+        // Initialize with default colors
+        setColors('#000000', '#13493f');
+    </script>
 </body>
 </html>
