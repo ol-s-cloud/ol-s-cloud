@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNG Color Changer</title>
+</head>
+<body>
+    <div class="container">
+        <h1>PNG Color Changer</h1>
+        <p>Upload your PNG image and change its colors instantly!</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <p>📁 Drag & drop your PNG file here or click to select</p>
+            <input type="file" id="fileInput" accept="image/png,image/svg+xml" style="display: none;">
+        </div>
+
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <h3>Original</h3>
+                <canvas id="originalCanvas"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+                <h3>Modified</h3>
+                <canvas id="modifiedCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
